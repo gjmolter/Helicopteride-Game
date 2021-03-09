@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Helicopteride!</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <script src="js/game.js"></script>
+  </head>
+
+  <body onload="setupGame()">
+    <h1>Helicopteride!</h1>
+    <div id="gameWrapper">
+      <canvas id="gameCanvas" width="1000px" height="540px"></canvas>
+      <div id="fuel">
+        <div id="fuelBkg"></div>
+        <div id="fuelAmount"></div>
+      </div>
+      <div id="score">
+        <span>00000m</span>
+      </div>
+      <div id="speed">
+        <span>000m/s</span>
+      </div>
+      <button id="startGameBtn">PLAY</button>
+    </div>
+  </body>
+</html>

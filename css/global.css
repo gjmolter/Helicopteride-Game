@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Allerta+Stencil&display=swap");
+
+body,
+html {
+  box-sizing: border-box;
+  min-height: 100vh;
+  font-family: "Allerta Stencil", sans-serif;
+  margin: 0;
+}
+body {
+  background-color: #28282d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+h1 {
+  color: #86a57e;
+  font-size: 60px;
+  transform: skewY(-3deg);
+  text-shadow: -6px 5px 5px #0006;
+  margin-bottom: 50px;
+}
+
+#gameWrapper {
+  width: 1000px;
+  height: 540px;
+  border: 6px solid #222;
+  background: linear-gradient(180deg, #6ea0bd, #849094);
+  position: relative;
+}
+
+#fuel,
+#score,
+#speed {
+  position: absolute;
+  background: #222323;
+  position: absolute;
+}
+
+#fuel {
+  width: 40px;
+  height: 200px;
+  top: 0;
+  left: 0;
+  border-radius: 0 0 70px 0;
+  overflow: hidden;
+}
+
+#fuelBkg {
+  width: 30px;
+  height: 190px;
+  background: linear-gradient(0deg, red 0%, orange 50%, #00ff00 100%);
+  margin: 2px;
+  border-radius: 0 0 70px 0;
+}
+
+#fuelAmount {
+  width: 30px;
+  height: 0px;
+  z-index: 1;
+  background: #222424;
+  position: absolute;
+  top: 0;
+  margin: 2px;
+}
+
+#score {
+  width: 130px;
+  height: 40px;
+  bottom: 0;
+  left: 0;
+  border-radius: 0 70px 0 0;
+}
+
+#speed {
+  width: 120px;
+  height: 40px;
+  bottom: 0;
+  right: 0;
+  border-radius: 70px 0 0 0;
+}
+
+#speed span {
+  color: white;
+  margin: 7px 10px;
+  font-size: 24px;
+  display: block;
+  text-align: right;
+}
+
+#score span {
+  color: white;
+  margin: 7px 10px;
+  font-size: 24px;
+  display: block;
+}
+
+#startGameBtn {
+  position: absolute;
+  top: calc(50% - 25px);
+  left: calc(50% - 110px);
+  width: 220px;
+  height: 50px;
+  background: #222323;
+  border: none;
+  color: white;
+  font-size: 28px;
+  border-radius: 30px;
+  font-family: "Allerta Stencil";
+  cursor: pointer;
+  transition: transform 200ms ease;
+}
+
+#startGameBtn:hover {
+  transform: scale(1.05);
+}
+
+#startGameBtn:focus {
+  outline: none;
+}
