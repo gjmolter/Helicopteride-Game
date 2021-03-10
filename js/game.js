@@ -20,8 +20,8 @@ On the other hand, max upwards speed is lower than downwards, so it will make th
 */
 
 const fps = 60; // 60 FPS will get best results
-const pixelToMeterRatio = 0.1; // How many game "meters" does one pixel represent
-const helicopterAcceleration = -1; // The upwards acceleration constant (px per frame per frame)
+const px2mRatio = 0.1; // How many game "meters" does one pixel represent
+const heliAcceleration = -1; // The upwards acceleration constant (px per frame per frame)
 const gravity = 1.08; // The downwards acceleration constant (px per frame per frame)
 const maxUpSpeed = -6; // px per frame
 const maxDownSpeed = 10; // px per frame
@@ -30,12 +30,14 @@ const gameSpeedIncreaseRatio = 1500; // The less, the faster the game will get o
 
 // Game Variables
 let ctx;
-let score; // px travelled in X axis
+let highScoreElement; //HTML Element
 let scoreElement; // HTML Element
-let fuel; // Percentage
 let fuelBar; // HTML Element
 let speedElement; // HTML Element
 let startButton; // HTML Element
+let score; // px travelled in X axis
+let highScore = 0;
+let fuel; // Percentage
 let xSpeed = 1;
 let ySpeed = 1.2;
 let playerPos = playerInitialPos; //Player Y position
@@ -49,6 +51,7 @@ let playerGoingUp = false;
 function setupGame() {
   scoreElement = document.querySelector("#score > span");
   speedElement = document.querySelector("#speed > span");
+  highScoreElement = document.getElementById("highScore");
   fuelBar = document.getElementById("fuelAmount");
   startButton = document.getElementById("startGameBtn");
   gameCanvas = document.getElementById("gameCanvas");
@@ -116,8 +119,8 @@ function addBirdObstacle() {
     2, // Type (0 is fuel, 1 is building, 2 is birds)
     1000, // X
     10 + Math.floor(Math.random() * 100), // Y
-    50, // Width
-    20, // Height
+    30, // Width
+    10, // Height
   ]);
 }
 
@@ -229,9 +232,11 @@ function updateDisplays() {
   //Add left as many zeros as necessary so there are always 5 characters + m
   scoreElement.innerText = `0000${parseInt(score)}m`.substr(-6);
 
+  highScoreElement.innerText = `High Score: ${parseInt(highScore)}m`;
+
   //Add left as many zeros as necessary so there are always 3 characters + m/s
   speedElement.innerText = `00${parseInt(
-    xSpeed / pixelToMeterRatio // Transform from px to m
+    xSpeed / px2mRatio // Transform from px to m
   )}m/s`.substr(-6);
 
   fuelBar.style.height = `${fuelBarHeight - fuel * (fuelBarHeight / 100)}px`;
@@ -354,17 +359,18 @@ function loop() {
     xSpeed = gameStartingSpeed + renderCount / gameSpeedIncreaseRatio;
 
     //Limit helicopter speed to about 115 m/s (396km/h)
-    xSpeed =
-      xSpeed / pixelToMeterRatio > 115 ? 115 * pixelToMeterRatio : xSpeed;
+    xSpeed = xSpeed / px2mRatio > 115 ? 115 * px2mRatio : xSpeed;
 
     // Increase score with the distance travelled on this render
     // Divide by the fps and then transform it from px to m
-    score += xSpeed / pixelToMeterRatio / fps; // / pixelToMeterRatio;
+    score += xSpeed / px2mRatio / fps;
+
+    //If score higher than previous high, replace it
+    highScore = score > highScore ? score : highScore;
 
     // Apply acceleration to player current Y Speed
     // Only allow going up if player has fuel
-    ySpeed =
-      ySpeed + (playerGoingUp && fuel > 0 ? helicopterAcceleration : gravity);
+    ySpeed = ySpeed + (playerGoingUp && fuel > 0 ? heliAcceleration : gravity);
 
     // Limit max Y Speed
     ySpeed = ySpeed < maxUpSpeed ? maxUpSpeed : ySpeed;
@@ -387,13 +393,14 @@ function loop() {
     if (shouldAddBird) addBirdObstacle();
     if (shouldAddFuel || renderCount === 1) addFuelTank();
 
-    //Move elements, remove them if they are out of screen and detects colision
+    // Move elements, remove them if they are out of screen and detects colision
     obstacles = moveLeft(obstacles);
 
     // Update screen
     drawGame();
 
-    //For debuging, do a log of main values every second
+    /* 
+    DEBUG: Log key values every second
     if (renderCount % fps === 0) {
       console.log({
         renderCount,
@@ -402,6 +409,7 @@ function loop() {
         fuel: `${fuel.toFixed(1)}%`,
       });
     }
+    */
 
     // Check if user lost the game, and if so, stop the loop
     if (playerPos > 540 || playerPos < 0) gameOver();

@@ -119,3 +119,16 @@ h1 {
 #startGameBtn:focus {
   outline: none;
 }
+
+#highScore {
+  position: absolute;
+  right: 5px;
+  color: #333;
+  top: 2px;
+}
+
+p {
+  color: white;
+  text-align: center;
+  line-height: 1.5em;
+}
