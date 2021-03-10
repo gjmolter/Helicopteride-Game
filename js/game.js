@@ -12,16 +12,15 @@ buildingImg.src = "img/building.png";
 fuelImg.src = "img/fuel.png";
 
 /*
-
 GAME LOGIC CONSTANTS
 
-Helicoter has a stronger upwards acceleration than the downwards gravity force.
-Which means to make it go up while it's falling will be faster than letting it fall after going up.
-But on the other hand, max upwards speed is lower than downwards, so it will make the helicopter "feel" heavy to the player.
+The helicoter has a stronger upwards acceleration compared to the downwards gravity force.
+Which means: making it go up while it's falling will be faster than letting it fall while going up.
+On the other hand, max upwards speed is lower than downwards, so it will make the helicopter "feel" heavy to the player.
 */
 
 const fps = 60; // 60 FPS will get best results
-const pixelToMeterRatio = 0.1; // How many game meters does one pixel represent
+const pixelToMeterRatio = 0.1; // How many game "meters" does one pixel represent
 const helicopterAcceleration = -1; // The upwards acceleration constant (px per frame per frame)
 const gravity = 1.08; // The downwards acceleration constant (px per frame per frame)
 const maxUpSpeed = -6; // px per frame
