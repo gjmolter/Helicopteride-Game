@@ -42,7 +42,7 @@ let xSpeed = 1;
 let ySpeed = 1.2;
 let playerPos = playerInitialPos; //Player Y position
 let renderCount = 0; // how many frames have been drawn since game started
-let obstacles = []; // Array of obstacles the player has to fly away from
+let obstacles = []; // Array of obstacles the player interacts with
 let gamePaused = false;
 let gameEnded = false;
 let playerGoingUp = false;
@@ -60,7 +60,7 @@ function setupGame() {
   startButton.addEventListener("click", startGame);
 }
 
-/* GAME LOGIC FUNCTIONS */
+/* GAME OBSTACLES */
 
 function checkColisionWithPlayer(obstacle) {
   return (
@@ -69,30 +69,6 @@ function checkColisionWithPlayer(obstacle) {
     playerPos - playerHeight < obstacle[2] + obstacle[4] &&
     playerPos + playerHeight > obstacle[2]
   );
-}
-
-function moveLeft(elements) {
-  var tempElements = [];
-  elements.forEach((el) => {
-    //If elements are out of the screen on the left side, remove them. If not, move them left
-    //Also remove the fuel element if player has caught it
-    if (el[1] > 0 - el[3]) {
-      el[1] = el[1] - xSpeed;
-      //Check if one of those elements touched the player
-      if (checkColisionWithPlayer(el)) {
-        if (el[0] === 0) {
-          fuel += 20;
-          fuel = fuel > 100 ? 100 : fuel; // Limit fuel to 100%
-        } else {
-          tempElements.push(el);
-          gameOver();
-        }
-      } else {
-        tempElements.push(el);
-      }
-    }
-  });
-  return tempElements;
 }
 
 function addBuildingObstacle() {
@@ -394,7 +370,27 @@ function loop() {
     if (shouldAddFuel || renderCount === 1) addFuelTank();
 
     // Move elements, remove them if they are out of screen and detects colision
-    obstacles = moveLeft(obstacles);
+    var tempObstacles = [];
+    obstacles.forEach((obstacle) => {
+      //If elements are out of the screen on the left side, remove them. If not, move them left
+      //Also remove the fuel element if player has caught it
+      if (obstacle[1] > 0 - obstacle[3]) {
+        obstacle[1] = obstacle[1] - xSpeed;
+        //Check if one of those elements touched the player
+        if (checkColisionWithPlayer(obstacle)) {
+          if (obstacle[0] === 0) {
+            fuel += 20;
+            fuel = fuel > 100 ? 100 : fuel; // Limit fuel to 100%
+          } else {
+            tempObstacles.push(obstacle);
+            gameOver();
+          }
+        } else {
+          tempObstacles.push(obstacle);
+        }
+      }
+    });
+    obstacles = tempObstacles;
 
     // Update screen
     drawGame();
